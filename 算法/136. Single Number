@@ -1,0 +1,31 @@
+#####136. Single Number
+
+#####题目
+Given an array of integers, every element appears twice except for one. Find that single one.
+
+Note:
+Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+#####思路
+遍历数组的过程中判断该数字是否在字典中存在，不存在，插入，存在删除，最后剩在字典中的最是答案。
+
+######代码
+```language
+	int singleNumber(vector<int>& nums) {
+      unordered_map<int ,int > map1{};
+        for(auto iter=nums.begin();iter!=nums.end();iter++)
+        {
+            if(map1.count((*iter)))
+                map1.erase((*iter));
+            else
+                map1[*iter]=(iter-nums.begin());
+        }
+        for (auto i = map1.begin(); i!=map1.end() ; ++i) {
+            cout<<(i->first)<<ends;
+        }
+        if(map1.size())
+            return (map1.begin())->first;
+        else
+            return 0;
+    }
+```
