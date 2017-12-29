@@ -70,6 +70,73 @@ function FixUIUtils.fixScene()
     local x,y=list:getPosition()
     local temp=screenSize.width/designSize.width*y
     list:setPositionY(designSize.width/screenSize.width*screenSize.height/2)
+    
+    
+    --wolf = wolf or {}
+local FixUIUtils = {}
+--local BUI = bf.UIManager:getInstance()
+local BUI=cc.Director:getInstance():getRunningScene()
+---自定义Cocos Studio屏幕像素
+local screenSize = cc.Director:getInstance():getOpenGLView():getFrameSize()
+local designSize = cc.size(1280,800)
+local minScale = math.min(screenSize.height/designSize.height,screenSize.width/designSize.width)
+local maxScale = math.max(screenSize.height/designSize.height,screenSize.width/designSize.width)
+
+--修正场景
+function FixUIUtils.fixScene()
+    local bg=wolf.UIManager.seekNodeByName(BUI, "SceneBack")
+    if(bg==nil)then
+        return
+    end
+    if(screenSize.height/designSize.height>=screenSize.width/designSize.width)then
+        local oldScale=screenSize.width/designSize.width
+        local newScale=bg:getScale()/oldScale*screenSize.height/designSize.height
+        bg:setScale(newScale)
+    end
+    local node=wolf.UIManager.seekNodeByName(BUI, "KW_MAIN_TOP_BACK")
+    node:setPositionY(designSize.width/screenSize.width*screenSize.height)
+    
+    local list=wolf.UIManager.seekNodeByName(BUI, "KW_MAIN_GAME_LAYOUT")
+    local x,y=list:getPosition()
+    list:setPositionY(designSize.width/screenSize.width*screenSize.height/2)
+end
+
+--放大背景或根节点
+function FixUIUtils.fixLayerRootNode(node)
+    if(screenSize.height/designSize.height>=screenSize.width/designSize.width)then
+        local oldScale=screenSize.width/designSize.width
+        local newScale=node:getScale()/oldScale*screenSize.height/designSize.height
+        node:setScale(newScale)
+    end
+end
+--是否跟随根节点一起放大,
+function FixUIUtils.fixLayerRootChild(child,isScaleRoot)
+    if(child==nil)then
+        print("child is nil")
+    return
+
+    end
+    local name=child:getName()
+    local tem=child:getScale()
+    --设置缩放大小==现在比例/父物体缩放*（即将缩放）==放大最小比例
+    local oldScale=screenSize.width/designSize.width
+    --[[
+                所有节点缩放之前，cocos自动将我们对齐到width，这个缩放比也要除去
+                两种情况：该节点与之前放大的背景节点是父子关系、和同级关系（isScaleRoot就是判断是否是父子关系，true是，false 否）
+                父子关系：先将该节点缩放到父节点之前的大小，再进行本轮的缩放
+                同级关系：直接缩放
+    --]]
+    if(isScaleRoot==true and screenSize.height/designSize.height>=screenSize.width/designSize.width) then
+        child:setScale(child:getScale()/((screenSize.height/designSize.height)/(screenSize.width/designSize.width)))
+    else
+        child:setScale(minScale/oldScale)
+    end
+    --设置中心位置
+    local x,y=child:getPosition()
+    child:setPosition(designSize.width/2,designSize.height/2)
+    print("Position",designSize.width/2,designSize.width/screenSize.width*screenSize.height/2)
+end
+return FixUIUtils
 end
 return FixUIUtils
 ```
