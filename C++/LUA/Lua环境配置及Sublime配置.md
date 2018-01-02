@@ -1,12 +1,12 @@
 #### Lua 使用SubLime编译  
 
-###### 制作编译器  
+###### 制作编译器   
 
-1.[下载lua源代码](http://www.lua.org/download.html)
+1.[下载lua源代码](http://www.lua.org/download.html)  
 
-2.进入src文件，新建文件vslua.bat并用text打开
+2.进入src文件，新建文件vslua.bat并用text打开  
 
-3.复制并黏贴以下代码
+3.复制并黏贴以下代码  
 
 ```
 copy lua.c lua.1
@@ -51,20 +51,19 @@ copy lua.1 lua.c
 del lua.1 lua.2
 ```
 
-4.选择vs的开发人员命令提示工具，打开vslua.bat文件。则会在同级目录产生一个bin文件
+4.选择vs的开发人员命令提示工具，打开vslua.bat文件。则会在同级目录产生一个bin文件  
 
-![](Picture/Lua环境配置及Sublime配置1.png)
+![](Picture/Lua环境配置及Sublime配置1.png)  
 
-5.将bin和src文件放在任意位置。
+5.将bin和src文件放在任意位置。  
 
-###### 环境配置
+###### 环境配置  
 
-1.环境变量中添加lua
+1.环境变量中添加lua  
 
-![](Picture/Lua环境配置及Sublime配置2.png)
+![](Picture/Lua环境配置及Sublime配置2.png)  
 
-2.在Path中配置`%lua%`,如果在`%lua%`前没有`;`，则加上。
+2.在Path中配置`%lua%`,如果在`%lua%`前没有`;`，则加上。  
 
-3.在sublime中直接使用`F7`运行即可执行
-4.
+3.在sublime中直接使用`F7`运行即可执行  
 参考链接：https://jingyan.baidu.com/article/359911f551917457fe0306e5.html?qq-pf-to=pcqq.c2c
