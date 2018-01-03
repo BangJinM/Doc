@@ -67,4 +67,14 @@ del lua.1 lua.2
 2.在Path中配置`%lua%`,如果在`%lua%`前没有`;`，则加上。  
 
 3.在sublime中直接使用`F7`运行即可执行  
+
+
+
+###### 注意事项：
+
+1.Sublime必须选择lua语言  
+
+2.文件必须要保存  
+
+
 参考链接：https://jingyan.baidu.com/article/359911f551917457fe0306e5.html?qq-pf-to=pcqq.c2c
