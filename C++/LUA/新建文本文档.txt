@@ -1,0 +1,11 @@
+function GameArea:SearchChild(parent,searchName,printMessage)
+    local childCount = parent:getChildrenCount()
+    if(parent:getName()==searchName)then
+        print(printMessage,searchName)
+     end
+    if childCount >= 1 then
+        for i = 1, childCount do
+            self:SearchChild(parent:getChildren()[i],searchName,printMessage)
+        end
+    end
+end
