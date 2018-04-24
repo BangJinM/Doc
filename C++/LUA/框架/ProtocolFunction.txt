@@ -1,0 +1,84 @@
+--[[
+--单例实现ProtocolFunction
+--端口的读入，执行回调等一系列方法
+--]]
+
+
+local ProtocolFunction = class("ProtocolFunction")
+local _handle = nil
+
+function ProtocolFunction:getInstance()
+    if _handle == nil then
+        _handle = ProtocolFunction.new()
+    end
+    return _handle
+end
+
+function ProtocolFunction:ctor()
+    self._appid = 0
+    self._XYCallBacks = {}
+    self:startProtolListen()
+end
+--[[
+    实现发送逻辑
+--]]
+function ProtocolFunction:sendPacket(xyid, appid)
+    if bf.ProtocolLogic:getInstance():getLoginState() ~= wolf.LoginState.SUCCESS then
+        return  
+    end
+    
+    if appid ~= nil then
+        wolf.ProtocolLogicEx:setAppID(appid)
+    else
+
+        wolf.ProtocolLogicEx:setAppID(self._appid)
+    end
+    wolf.ProtocolLogicEx:sendPacket(xyid)
+end
+
+function ProtocolFunction:setAppID(appid)
+    self._appid = appid
+end
+
+function ProtocolFunction:getAppID()
+    return self._appid
+end 
+--[[
+开始监听端口
+--]]
+function ProtocolFunction:startProtolListen()
+    wolf.ProtocolLogicEx:addProtocolScriptFunc(handler(self, self.onReciveMsg))
+    self.consoleEntryId = bf.ConsoleManager:getInstance():addConsoleScriptFunc(handler(self, self.onReciveMsg))
+end
+
+--[[
+停止监听端口
+--]]
+function ProtocolFunction:stopProtocolListen()
+    wolf.ProtocolLogicEx:removeProtocolCallBack(handler(self, self.onReciveMsg))
+    bf.ConsoleManager:getInstance():removeConsoleScriptFunc(self.consoleEntryId)
+end
+--[[
+向_XYCallBacks中注册协议
+--]]
+function ProtocolFunction:registProtocol(xy, func, gc)
+    local xyCallBack = {xy = xy,func = func, gc = gc}
+    self._XYCallBacks[xy.XY_ID] = xyCallBack
+end
+--[[
+开始接受消息
+--]]
+function ProtocolFunction:onReciveMsg(XYID, buff, len)
+    print("ProtocolFunction onReciveGameMsg:", XYID)
+    local xyCallBack = self._XYCallBacks[XYID]
+    if xyCallBack then
+        local obj = xyCallBack.xy:new()
+        obj:bistream(buff, len)
+        xyCallBack.func(obj)
+        if xyCallBack.gc then
+            self._XYCallBacks[XYID] = nil
+        end
+    end
+end
+
+return ProtocolFunction

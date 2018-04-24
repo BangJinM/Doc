@@ -1,0 +1,252 @@
+
+local ProtocolLogicEx = class("ProtocolLogicEx")
+ProtocolLogicEx._Protocollist = {}
+ProtocolLogicEx._LinkStateList = {}
+ProtocolLogicEx._SRSSpeedList = {}
+
+--[[
+设置标记
+]]
+function ProtocolLogicEx:setTag(nTag)
+    bf.ProtocolLogic:getInstance():setTag(nTag)
+end
+
+function ProtocolLogicEx:getTag()
+    return bf.ProtocolLogic:getInstance():getTag()
+end
+   
+--[[
+设置自定义数据
+]]
+function ProtocolLogicEx:setUserData(strData)
+    bf.ProtocolLogic:getInstance():setUserData(strData)
+end
+ 
+function ProtocolLogicEx:getUserData()
+    return bf.ProtocolLogic:getInstance():getUserData()
+end
+   
+--[[
+SRS测速和负载，多线程执行
+]]
+function ProtocolLogicEx:checkSRSSpeed(nAppID, strIP, nPort)
+    bf.ProtocolLogic:getInstance():checkSRSSpeed(nAppID,strIP,nPort)
+end
+       
+--[[
+增加协议监听
+返回entryId
+]]
+function ProtocolLogicEx:addProtocolScriptFunc(callback)
+    if type(callback) ~= "function" then
+    	print("callback is not a function")
+    	return -1
+    end
+   
+    if(not ProtocolLogicEx._Protocollist[callback]) then
+        ProtocolLogicEx._Protocollist[callback] = bf.ProtocolLogic:getInstance():addProtocolScriptFunc(callback)    
+    end
+    
+    return ProtocolLogicEx._Protocollist[callback]
+end
+
+--[[
+移除协议监听
+]]
+function ProtocolLogicEx:removeProtocolScriptFunc(entryId)
+    for key, value in pairs(ProtocolLogicEx._Protocollist) do
+        if(value == entryId) then
+            ProtocolLogicEx._Protocollist[key] = nil
+            break
+        end
+    end
+    
+    return bf.ProtocolLogic:getInstance():removeProtocolScriptFunc(entryId)
+end
+
+--[[
+增加网络状态监听    
+返回entryId
+]]
+function ProtocolLogicEx:addLinkStateScriptFunc(callback)
+    if type(callback) ~= "function" then
+        print("callback is not a function")
+        return -1
+    end
+   
+    if(not ProtocolLogicEx._LinkStateList[callback]) then
+        ProtocolLogicEx._LinkStateList[callback] = bf.ProtocolLogic:getInstance():addLinkStateScriptFunc(callback)   
+   end
+   
+    return ProtocolLogicEx._LinkStateList[callback]
+end
+
+--[[
+移除网络状态监听
+]]
+function ProtocolLogicEx:removeLinkStateScriptFunc(entryId)
+    for key, value in pairs(ProtocolLogicEx._LinkStateList) do
+        if(value == entryId) then
+            ProtocolLogicEx._LinkStateList[key] = nil
+            break
+        end
+    end
+    
+    return bf.ProtocolLogic:getInstance():removeLinkStateScriptFunc(entryId)
+end
+
+--[[
+增加网络测速监听    
+返回entryId
+]]
+function ProtocolLogicEx:addSRSSpeedScriptFunc(callback)
+    if type(callback) ~= "function" then
+        print("callback is not a function")
+        return -1
+    end
+    
+    if(not ProtocolLogicEx._SRSSpeedList[callback]) then
+        ProtocolLogicEx._SRSSpeedList[callback] = bf.ProtocolLogic:getInstance():addSRSSpeedScriptFunc(callback)  
+    end
+    
+    return ProtocolLogicEx._SRSSpeedList[callback] 
+end
+
+--[[
+移除网络测速监听 
+]]
+function ProtocolLogicEx:removeSRSSpeedScriptFunc(entryId)
+    for key, value in pairs(ProtocolLogicEx._SRSSpeedList) do
+        if(value == entryId) then
+            ProtocolLogicEx._SRSSpeedList[key] = nil
+            break
+        end
+    end
+    return bf.ProtocolLogic:getInstance():removeSRSSpeedScriptFunc(entryId)
+end
+--[[
+      设置网络连接超时时间(单位：毫秒，默认值10*1000毫秒)
+]]
+function ProtocolLogicEx:setSocketConnectTimeoutTime(nTime)
+    bf.ProtocolLogic:getInstance():setSocketConnectTimeoutTime(nTime)
+end
+
+--[[
+      获取网络连接超时时间(单位：毫秒)
+]]
+function ProtocolLogicEx:getSocketConnectTimeoutTime()
+    return bf.ProtocolLogic:getInstance():getSocketConnectTimeoutTime()
+end
+
+--[[
+      设置心跳包发送时间间隔(单位：毫秒， 默认值5*1000毫秒)
+ ]]
+function ProtocolLogicEx:setSendHeartBeatTime(nTime)
+    bf.ProtocolLogic:getInstance():setSendHeartBeatTime(nTime)
+end
+
+--[[
+      获取心跳包发送时间间隔(单位：毫秒)
+]]
+function ProtocolLogicEx:getSendHeartBeatTime()
+   return  bf.ProtocolLogic:getInstance():getSendHeartBeatTime()
+end
+
+ --[[
+ 设置心跳包返回超时时间(单位:毫秒, 默认值5*1000毫秒)，用于检测网络连接状态， 0为关闭心跳包检测网络状态功能
+ ]]
+function ProtocolLogicEx:setHeartBeatTimeoutTime(nTime)
+    bf.ProtocolLogic:getInstance():setHeartBeatTimeoutTime(nTime)
+end
+
+function ProtocolLogicEx:getHeartBeatTimeoutTime()
+   return bf.ProtocolLogic:getInstance():getHeartBeatTimeoutTime()
+end
+        
+--[[
+  设置登录状态
+]]
+function ProtocolLogicEx:setLoginState(loginState)
+    bf.ProtocolLogic:getInstance():setLoginState(loginState)
+end
+
+--[[
+     设置AppID
+]]--
+function ProtocolLogicEx:setAppID(appID)
+    bf.ProtocolLogic:getInstance():setAppID(appID)
+end
+
+--[[
+    获取AppID
+]]--
+function ProtocolLogicEx:getAppID()
+    return bf.ProtocolLogic:getInstance():getAppID()
+end
+
+--[[
+  获取网络连接状态
+]]--
+function ProtocolLogicEx:getLinkState()
+    return bf.ProtocolLogic:getInstance():getLinkState()
+end
+
+--[[
+    发起连接网络
+]]--
+function ProtocolLogicEx:linkSRS(strIP, nPort)
+    return bf.ProtocolLogic:getInstance():linkSRS(strIP,nPort)
+end
+
+--[[
+    断开连接网络
+]]--
+function ProtocolLogicEx:cancelLinkSRS()    
+    return bf.ProtocolLogic:getInstance():cancelLinkSRS()
+end
+
+--[[
+分发网络连接状态
+]]
+function ProtocolLogicEx:OnLinkStatus(linkStatus)
+    if(not linkStatus) then
+        print("ERROR linkStatus is a nil value")
+        return nil
+    end
+    
+    bf.ProtocolLogic:getInstance():OnLinkStatus(linkStatus)
+end
+
+--[[
+RC4加密
+]]
+function ProtocolLogicEx:EncryptRC4(strIn)
+    return bf.ProtocolLogic:getInstance():EncryptRC4(strIn)
+end
+
+--[[
+RC4解密
+]]
+
+function ProtocolLogicEx:DecryptRC4(strIn)
+    return bf.ProtocolLogic:getInstance():DecryptRC4(strIn)
+end
+
+--[[
+   发送数据包
+]]--
+function ProtocolLogicEx:sendPacket(package)
+    if(type(package) ~= "table") then
+        print("package is not a table")
+        return -1
+    end
+    
+    local bos = package:bostream()
+    local XYID = package.XY_ID
+    local buff = bos:getBuff()
+    local bufflen = bos:getBuffLen()
+
+    return bf.ProtocolLogic:getInstance():sendPacket(XYID, buff, bufflen)
+end
+
+return ProtocolLogicEx
