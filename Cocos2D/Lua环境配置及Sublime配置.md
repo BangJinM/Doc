@@ -53,8 +53,8 @@ del lua.1 lua.2
 
 
 4.选择vs的开发人员命令提示工具，打开vslua.bat文件。则会在同级目录产生一个bin文件
-![](Picture/Lua环境配置及Sublime配置3.png)
-![](Picture/Lua环境配置及Sublime配置1.png)
+![](pic/Lua环境配置及Sublime配置3.png)
+![](pic/Lua环境配置及Sublime配置1.png)
 
 5.将bin和src文件放在任意位置。  
 
@@ -62,7 +62,7 @@ del lua.1 lua.2
 
 1.环境变量中添加lua  
 
-![](Picture/Lua环境配置及Sublime配置2.png)  
+![](pic/Lua环境配置及Sublime配置2.png)  
 
 2.在Path中配置`%lua%`,如果在`%lua%`前没有`;`，则加上。  
 

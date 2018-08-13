@@ -4,4 +4,4 @@ using string都会报错Type 'string' could not be resolved。
 
 
 
-![](Picture/2_1.jpg)
+![](pic/2_1.jpg)
